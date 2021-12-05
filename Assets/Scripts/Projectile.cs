@@ -36,6 +36,11 @@ public class Projectile : MonoBehaviour
         {
             f.Fix();
         }
+        GolemScript g = other.collider.GetComponent<GolemScript>();
+        if (g != null)
+        {
+            g.Fix();
+        }
 
         Destroy(gameObject);
     }

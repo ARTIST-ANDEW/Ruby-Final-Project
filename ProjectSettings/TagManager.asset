@@ -7,6 +7,10 @@ TagManager:
   - rubyController
   - RubyController
   - Ammo
+  - Blast
+  - End
+  - Coin
+  - Level3
   layers:
   - Default
   - TransparentFX

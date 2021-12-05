@@ -20,13 +20,16 @@ public class RubyController : MonoBehaviour
     public AudioClip winSound;
     public AudioClip loseSound;
     public AudioClip backroundMusic;
+    public AudioClip coin;
     
     public int health { get { return currentHealth; }}
     private int score = 0;
+    private int coins = 0;
     private int currentScore; 
     public Text scoreText;
     public Text endText;
     public Text cogText;
+    public Text coinText;
     int currentHealth;
     int cogs = 4;
     
@@ -58,9 +61,11 @@ public class RubyController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         endText.text = "  ";
         
+        
         audioSource.clip = backroundMusic;
         audioSource.Play();
         audioSource.loop = true;
+        coinText.text = " Collect 4 coins to access the secret level! ";
 
     }
 
@@ -130,7 +135,8 @@ public class RubyController : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
-        
+        if (coins == 4)
+            coinText.text = " Follow the path to the upper right to access the secret level! "; 
         
     }
     
@@ -151,6 +157,31 @@ public class RubyController : MonoBehaviour
             cogs = cogs + 1;
             cogText.text = " X " + cogs.ToString ();
         }
+        if (other.gameObject.CompareTag("End"))
+        {
+            endText.text ="You Won The Secret Level! Game created by Andrew Sisk! Press R to Restart!";
+            end = true;
+            audioSource.clip = winSound;
+            audioSource.Play();
+            audioSource.loop = false;
+        }
+        if (other.gameObject.CompareTag("Level3"))
+        {
+            if(coins == 4)
+            {
+            SceneManager.LoadScene("Level 3");
+            level = 3;
+            }
+        }
+        
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            other.gameObject.SetActive(false);
+            coins = coins + 1;
+            Debug.Log(coins);
+            PlaySound(coin);
+        }
+        
     }
     public void ChangeHealth(int amount)
     {
@@ -193,6 +224,15 @@ public class RubyController : MonoBehaviour
             audioSource.loop = false;
 
         }
+        /*if(score == 4&&level == 3)
+        {
+            endText.text ="You Won The Secret Level! Game created by Andrew Sisk! Press R to Restart!";
+            end = true;
+            audioSource.clip = winSound;
+            audioSource.Play();
+            audioSource.loop = false;
+
+        }*/
         else if(score == 4)
         {
             endText.text ="Talk To Jambi to visit stage two!";
